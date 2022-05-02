@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
 
 const TripDash = ({ route }) => {
-    const tripData = route.params.TripData;
+    const tripData = route.params.tripData;
     const userData = route.params.userData;
   return (
     <SafeAreaView>

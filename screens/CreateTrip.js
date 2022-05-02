@@ -38,9 +38,9 @@ const CreateTrip = ({ route }) => {
                 case 200:
                     res.json().then(data => {
                         console.log(data);
-                        navigation.navigate('Home', {
-                            user: userData,
-                            trip: data
+                        navigation.replace('TripDash', {
+                            userData: userData,
+                            tripData: data
                         });
                     })
                     break;

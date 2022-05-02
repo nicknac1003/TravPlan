@@ -21,7 +21,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name='Home' component={HomeScreen}/>
         <Stack.Screen options={{headerShown: false}} name='CreateTrip' component={CreateTrip}/>
         <Stack.Screen name='Swipes' component={SwipeScreen}/>
-        <Stack.Screen options={{headerShown: false}} name='TripDash' component={TripDash}/>
+        <Stack.Screen name='TripDash' component={TripDash}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

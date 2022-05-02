@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ImageBackground
 import React from 'react'
 import {useEffect, useState} from 'react'
 import { EvilIcons } from '@expo/vector-icons'; 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 const HomeScreen = ({route}) => {
     const userData = route.params
@@ -10,10 +10,11 @@ const HomeScreen = ({route}) => {
     const [currIndex, setCurrIndex] = useState(0)
 
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
     useEffect(() => {
         //console.log('HOME', userData);
         fetchUserTrips();
-    }, [])
+    }, [isFocused])
 
     const fetchUserTrips = () => {
         fetch(`https://us-central1-travplan-347915.cloudfunctions.net/getTripsForUser?email=${userData.user.email}`, {
@@ -58,7 +59,7 @@ const HomeScreen = ({route}) => {
                                         style={styles.tripImage}
                                         key={index}
                                     >
-                                        <TouchableOpacity style={styles.tripButton} onPress={()=>{navigation.navigate('TripDash', {userData: userData, TripData: trip})}}>
+                                        <TouchableOpacity style={styles.tripButton} onPress={()=>{navigation.navigate('TripDash', {userData: userData, tripData: trip})}}>
                                             <View style={styles.tripText}>
                                                 <Text style={styles.tripName}>{trip.tripName}</Text>
                                                 <Text style={styles.tripDestination}>{trip.tripDestination}</Text>

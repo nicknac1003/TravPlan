@@ -10,6 +10,7 @@ const LoginScreen = () => {
 
     const handleLogin = () => {
         //console.log(email, password);
+        Keyboard.dismiss();
         fetch('https://us-central1-travplan-347915.cloudfunctions.net/login', {
             method: 'POST',
             headers: {
