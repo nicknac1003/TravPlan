@@ -90,8 +90,10 @@ const LoginScreen = () => {
                         <Text style={styles.signupButton}>Sign up</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Swipes')}><Text>swpies</Text></TouchableOpacity>
             </View>
         </TouchableWithoutFeedback>
+        
       </ImageBackground>
     </KeyboardAvoidingView>
   )
