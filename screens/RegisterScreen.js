@@ -17,6 +17,7 @@ const RegisterScreen = () => {
          * sign in user
          * navigate to home screen
          */
+        navigation.navigate('Home');
     }
 
   return (
