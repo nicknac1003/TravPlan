@@ -9,13 +9,37 @@ const LoginScreen = () => {
     const navigation = useNavigation();
 
     const handleLogin = () => {
-        console.log(email, password);
-        /**
-         * TODO:
-         * sign in user
-         * navigate to home screen
-         */
-        navigation.navigate('Home');
+        //console.log(email, password);
+        fetch('https://us-central1-travplan-347915.cloudfunctions.net/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+        .then(res=> {
+            let statusCode = res.status;
+            console.log(statusCode);
+            switch(statusCode) {
+                case 404:
+                    alert('Email or password incorrect');
+                    break;
+                case 200:
+                    res.json().then(data => {
+                        console.log(data);
+                        navigation.navigate('Home', {
+                            user: data
+                        });
+                    });
+                    break;
+                default:
+                    alert('Something went wrong');
+                    break;
+            }
+        })
     }
 
   return (
