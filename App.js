@@ -7,6 +7,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import SwipeScreen from './screens/SwipeScreen';
 import CreateTrip from './screens/CreateTrip';
+import TripDash from './screens/TripDash';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name='Home' component={HomeScreen}/>
         <Stack.Screen options={{headerShown: false}} name='CreateTrip' component={CreateTrip}/>
         <Stack.Screen name='Swipes' component={SwipeScreen}/>
+        <Stack.Screen options={{headerShown: false}} name='TripDash' component={TripDash}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
