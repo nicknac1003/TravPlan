@@ -2,22 +2,85 @@ import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInpu
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import background from '../assets/images/background.png'
+import DateTimePicker from '@react-native-community/datetimepicker';
 const RegisterScreen = () => {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    
-    const navigation = useNavigation();
+    const [birthday, setBirthday] = React.useState(new Date());
 
+    const navigation = useNavigation();
     const handleRegister = () => {
-        console.log(name, email, password);
+        console.log(name, email, password, birthday);
         /**
          * TODO:
          * register user to database
          * sign in user
          * navigate to home screen
          */
-        navigation.navigate('Home');
+        fetch('https://us-central1-travplan-347915.cloudfunctions.net/signUp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                },
+            body: JSON.stringify({
+                fullName: name,
+                email: email,
+                password: password,
+                dob: birthday
+                })
+            })
+            .then(res => {
+                let statusCode = res.status;
+                console.log(statusCode);
+                switch(statusCode) {
+                    case 400:
+                        alert('error');
+                        console.log(JSON.stringify(res))
+                        break;
+                    case 200:
+                        res.json().then(data => {
+                            fetch('https://us-central1-travplan-347915.cloudfunctions.net/login', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: data.email,
+                                    password: data.password
+                                })
+                            })
+                            .then(res => {
+                                let statusCode = res.status;
+                                console.log(statusCode);
+                                switch(statusCode) {
+                                    case 404:
+                                        alert('Email or password incorrect');
+                                        break;
+                                    case 200:
+                                        res.json().then(data => {
+                                            console.log(data);
+                                            navigation.navigate('Home', {
+                                                user: data
+                                            });
+                                        });
+                                        break;
+                                    default:
+                                        alert('Something went wrong');
+                                        break;
+                                }
+                            }
+                            )})
+                        break;
+                    default:
+                        alert('Something went wrong');
+                        break;
+                }
+            })
+        //navigation.navigate('Home');
+    }
+    const onChange = (e, date) => {
+        setBirthday(date);
     }
 
   return (
@@ -55,6 +118,16 @@ const RegisterScreen = () => {
                         onChangeText={text => setPassword(text)}
                         secureTextEntry
                     />
+                    <View style={styles.dateContainer}>
+                        <Text style={styles.dateText}>Birthday</Text>
+                        <DateTimePicker
+                            mode="date"
+                            value={birthday}
+                            is24Hour={true}
+                            onChange={onChange}
+                            style={styles.datePicker}
+                        />
+                    </View>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
@@ -67,7 +140,7 @@ const RegisterScreen = () => {
                 <View style={styles.signupContainer}>
                     <Text style={styles.signupText}>have an account?</Text>
                     <TouchableOpacity
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={() => navigation.goBack()}
                     >
                         <Text style={styles.signupButton}>Log in</Text>
                     </TouchableOpacity>
@@ -152,6 +225,25 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textDecorationLine: 'underline',
     },
+    datePicker: {
+        width: '50%',
+        borderWidth: 2,
+        borderColor: 'rgba(255,255,255,0.7)',
+        borderRadius: 10,
+    },
+    dateContainer: {
+        width: '80%',
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    dateText: {
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: 15,
+        width: '40%',
+    },
+
 })
 
 
