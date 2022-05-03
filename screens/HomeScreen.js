@@ -4,10 +4,13 @@ import {useEffect, useState} from 'react'
 import { EvilIcons } from '@expo/vector-icons'; 
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
+import * as Progress from 'react-native-progress';
+
 const HomeScreen = ({route}) => {
-    const userData = route.params
+    const userData = route.params.userData
     const [trips, setTrips] = useState([])
     const [currIndex, setCurrIndex] = useState(0)
+    const [loading, setLoading] = useState(true)
 
     const navigation = useNavigation();
     const isFocused = useIsFocused();
@@ -17,7 +20,8 @@ const HomeScreen = ({route}) => {
     }, [isFocused])
 
     const fetchUserTrips = () => {
-        fetch(`https://us-central1-travplan-347915.cloudfunctions.net/getTripsForUser?email=${userData.user.email}`, {
+        setLoading(true)
+        fetch(`https://us-central1-travplan-347915.cloudfunctions.net/getTripsForUser?email=${userData.email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,6 +29,7 @@ const HomeScreen = ({route}) => {
         })
         .then(res =>{
             let statusCode = res.status;
+            setLoading(false);
             switch(statusCode) {
                 case 404:
                     alert('you dont exist');
@@ -59,7 +64,7 @@ const HomeScreen = ({route}) => {
                                         style={styles.tripImage}
                                         key={index}
                                     >
-                                        <TouchableOpacity style={styles.tripButton} onPress={()=>{navigation.navigate('TripDash', {userData: userData, tripData: trip})}}>
+                                        <TouchableOpacity style={styles.tripButton} onPress={()=>{navigation.navigate('Trip', {screen: 'Dashboard',params: {userData: userData, tripData: trip}})}}>
                                             <View style={styles.tripText}>
                                                 <Text style={styles.tripName}>{trip.tripName}</Text>
                                                 <Text style={styles.tripDestination}>{trip.tripDestination}</Text>
@@ -87,7 +92,12 @@ const HomeScreen = ({route}) => {
             <Text style={styles.headTitle}>Want to Travel?</Text>
             <Text style={styles.headTitle}>Lets Go!</Text>
         </View>
-        <TripContainer />
+        {
+            loading ?
+            <Progress.CircleSnail size={100} color={['black']} />
+            :
+            <TripContainer />
+        }
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.newTripButton} onPress={handleCreateTrip}>
                 <Text style={styles.newTripText}>Create New Trip</Text>

@@ -32,7 +32,7 @@ const LoginScreen = () => {
                     res.json().then(data => {
                         console.log(data);
                         navigation.navigate('Home', {
-                            user: data
+                            userData: data
                         });
                     });
                     break;
@@ -91,7 +91,6 @@ const LoginScreen = () => {
                         <Text style={styles.signupButton}>Sign up</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('Swipes')}><Text>swpies</Text></TouchableOpacity>
             </View>
         </TouchableWithoutFeedback>
         

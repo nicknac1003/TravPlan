@@ -61,7 +61,7 @@ const RegisterScreen = () => {
                                         res.json().then(data => {
                                             console.log(data);
                                             navigation.navigate('Home', {
-                                                user: data
+                                                userData: data
                                             });
                                         });
                                         break;

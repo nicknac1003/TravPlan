@@ -76,9 +76,6 @@ function SwipeScreen({ routes, navigation}) {
     return (
 
       <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-
-        </View>
 
         <View style={styles.swipeContainer}>
           <Swiper cards={places}
