@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import Background from '../assets/images/Atlanta.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../hooks/UserProvider';
 const CreateTrip = ({ route }) => {
-    const userData = route.params.userData;
     const [tripName, setTripName] = useState('');
     const [tripDestination, setTripDestination] = useState('');
     const [tripStartDate, setTripStartDate] = useState(new Date());
     const [tripEndDate, setTripEndDate] = useState(new Date());
+    const { user, setTrip } = useUser();
     const navigation = useNavigation();
     //https://media.cntraveler.com/photos/57471fe678a2718d4665d5e6/16:9/w_2560%2Cc_limit/atlanta-georgia-skyline-cr-getty.jpg
     const handleGo = () => {
@@ -24,7 +25,7 @@ const CreateTrip = ({ route }) => {
                 tripDateEnd: tripEndDate,
                 tripImage:'https://media.cntraveler.com/photos/57471fe678a2718d4665d5e6/16:9/w_2560%2Cc_limit/atlanta-georgia-skyline-cr-getty.jpg',
                 itenerary: [],
-                email: userData.email,
+                email: user.email,
             })
         })
         .then(res => {
@@ -38,14 +39,9 @@ const CreateTrip = ({ route }) => {
                 case 200:
                     res.json().then(data => {
                         console.log(data);
-                        navigation.replace('Trip', {
-                            screen: 'Dashboard',
-                            params:{
-                                userData: userData,
-                                tripData: data
-                            }
-                        });
-                    })
+                        setTrip(data);
+                        navigation.replace('Trip')
+                    });
                     break;
             }
         });

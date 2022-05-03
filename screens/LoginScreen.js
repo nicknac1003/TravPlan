@@ -2,10 +2,12 @@ import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInpu
 import React from 'react'
 import background from '../assets/images/background.png'
 import { useNavigation } from '@react-navigation/native'
+import { useUser } from '../hooks/UserProvider';
 const LoginScreen = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    
+    const { setUser } = useUser();
+
     const navigation = useNavigation();
 
     const handleLogin = () => {
@@ -23,14 +25,15 @@ const LoginScreen = () => {
         })
         .then(res=> {
             let statusCode = res.status;
-            console.log(statusCode);
+            //console.log(statusCode);
             switch(statusCode) {
                 case 404:
                     alert('Email or password incorrect');
                     break;
                 case 200:
                     res.json().then(data => {
-                        console.log(data);
+                        //console.log(data);
+                        setUser(data);
                         navigation.navigate('Home', {
                             userData: data
                         });

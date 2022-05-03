@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { UserProvider } from './hooks/UserProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //screens
 import LoginScreen from './screens/LoginScreen';
@@ -68,14 +69,15 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        
-        <Stack.Screen options={{headerShown: false}} name='Login' component={LoginScreen}/>
-        <Stack.Screen options={{headerShown: false}} name='Register' component={RegisterScreen}/>
-        <Stack.Screen options={{headerShown: false}} name='Home' component={HomeScreen}/>
-        <Stack.Screen options={{headerShown: false}} name='CreateTrip' component={CreateTrip}/>
-        <Stack.Screen options={{headerShown: false}} name='Trip' component={TripContainer}/>
-      </Stack.Navigator>
+      <UserProvider>
+        <Stack.Navigator>
+          <Stack.Screen options={{headerShown: false}} name='Login' component={LoginScreen}/>
+          <Stack.Screen options={{headerShown: false}} name='Register' component={RegisterScreen}/>
+          <Stack.Screen options={{headerShown: false}} name='Home' component={HomeScreen}/>
+          <Stack.Screen options={{headerShown: false}} name='CreateTrip' component={CreateTrip}/>
+          <Stack.Screen options={{headerShown: false}} name='Trip' component={TripContainer}/>
+        </Stack.Navigator>
+      </UserProvider>
     </NavigationContainer>
   );
 

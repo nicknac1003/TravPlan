@@ -5,23 +5,24 @@ import { EvilIcons } from '@expo/vector-icons';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import * as Progress from 'react-native-progress';
-
+import { useUser } from '../hooks/UserProvider';
 const HomeScreen = ({route}) => {
-    const userData = route.params.userData
     const [trips, setTrips] = useState([])
     const [currIndex, setCurrIndex] = useState(0)
     const [loading, setLoading] = useState(true)
+    const { user, setTrip } = useUser();
 
     const navigation = useNavigation();
     const isFocused = useIsFocused();
     useEffect(() => {
         //console.log('HOME', userData);
+        console.log(user)
         fetchUserTrips();
     }, [isFocused])
 
     const fetchUserTrips = () => {
         setLoading(true)
-        fetch(`https://us-central1-travplan-347915.cloudfunctions.net/getTripsForUser?email=${userData.email}`, {
+        fetch(`https://us-central1-travplan-347915.cloudfunctions.net/getTripsForUser?email=${user.email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +37,8 @@ const HomeScreen = ({route}) => {
                     break;
                 case 200:
                     res.json().then(data => {
-                        console.log(data);
+                        //console.log(data);
+
                         setTrips([...data]);
                     });
                     break;
@@ -47,7 +49,12 @@ const HomeScreen = ({route}) => {
     }
 
     const handleCreateTrip = () => {
-        navigation.navigate('CreateTrip', {userData: userData})
+        navigation.navigate('CreateTrip');
+    }
+
+    const handlePress = (trip) => {
+        setTrip(trip);
+        navigation.navigate('Trip');
     }
 
     const TripContainer = (props) => {
@@ -64,7 +71,7 @@ const HomeScreen = ({route}) => {
                                         style={styles.tripImage}
                                         key={index}
                                     >
-                                        <TouchableOpacity style={styles.tripButton} onPress={()=>{navigation.navigate('Trip', {screen: 'Dashboard',params: {userData: userData, tripData: trip}})}}>
+                                        <TouchableOpacity style={styles.tripButton} onPress={()=>handlePress(trip)}>
                                             <View style={styles.tripText}>
                                                 <Text style={styles.tripName}>{trip.tripName}</Text>
                                                 <Text style={styles.tripDestination}>{trip.tripDestination}</Text>

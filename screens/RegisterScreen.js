@@ -1,13 +1,15 @@
-import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Button } from 'react-native'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import background from '../assets/images/background.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 const RegisterScreen = () => {
-    const [name, setName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [birthday, setBirthday] = React.useState(new Date());
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [birthday, setBirthday] = useState(new Date());
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const navigation = useNavigation();
     const handleRegister = () => {
@@ -79,9 +81,22 @@ const RegisterScreen = () => {
             })
         //navigation.navigate('Home');
     }
-    const onChange = (e, date) => {
+
+    
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        //console.warn("A date has been picked: ", date);
         setBirthday(date);
-    }
+        hideDatePicker();
+    };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
@@ -120,13 +135,15 @@ const RegisterScreen = () => {
                     />
                     <View style={styles.dateContainer}>
                         <Text style={styles.dateText}>Birthday</Text>
-                        <DateTimePicker
-                            mode="date"
-                            value={birthday}
-                            is24Hour={true}
-                            onChange={onChange}
-                            style={styles.datePicker}
-                        />
+                        <View>
+                            <Button title="Show Date Picker" onPress={showDatePicker} />
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                            />
+                        </View>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
