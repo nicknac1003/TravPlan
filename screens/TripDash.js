@@ -14,7 +14,7 @@ const TripDash = ({ route, navigation }) => {
             </TouchableOpacity>
         </View>  
         <View>
-            <Text>{tripData.tripName}</Text>
+            <Text style={styles.tripName}>{tripData.tripName}</Text>
         </View>
         
     </SafeAreaView>
@@ -42,5 +42,11 @@ const styles = StyleSheet.create({
     HomeButtonText: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    tripName: {
+        fontSize: 30,
+        fontWeight: '200',
+        marginBottom: 30,
+        textAlign: 'center',
     },
 })
