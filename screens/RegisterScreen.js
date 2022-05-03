@@ -1,4 +1,15 @@
-import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import {
+    ImageBackground,
+    StyleSheet,
+    Text,
+    View,
+    KeyboardAvoidingView,
+    TextInput,
+    TouchableOpacity,
+    Keyboard,
+    TouchableWithoutFeedback,
+    Platform
+} from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import background from '../assets/images/background.png'
@@ -8,6 +19,7 @@ const RegisterScreen = () => {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [birthday, setBirthday] = React.useState(new Date());
+    const [showDatePicker, setShowDatePicker] = React.useState(false);
 
     const navigation = useNavigation();
     const handleRegister = () => {
@@ -80,6 +92,7 @@ const RegisterScreen = () => {
         //navigation.navigate('Home');
     }
     const onChange = (e, date) => {
+        setShowDatePicker(Platform.OS === 'ios');
         setBirthday(date);
     }
 
@@ -92,7 +105,7 @@ const RegisterScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Register</Text>
+                    <Text style={styles.title}>Glad to have you!</Text>
                 </View>
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -118,15 +131,19 @@ const RegisterScreen = () => {
                         onChangeText={text => setPassword(text)}
                         secureTextEntry
                     />
-                    <View style={styles.dateContainer}>
-                        <Text style={styles.dateText}>Birthday</Text>
-                        <DateTimePicker
+                    <View style={styles.input}>
+                        <TouchableOpacity
+                            onPress={() => setShowDatePicker(true)}
+                        >
+                            <Text style={styles.dateText}>Set birthday...</Text>
+                        </TouchableOpacity>
+                        {showDatePicker ? <DateTimePicker
                             mode="date"
                             value={birthday}
                             is24Hour={true}
                             onChange={onChange}
                             style={styles.datePicker}
-                        />
+                        /> : null}
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -138,7 +155,7 @@ const RegisterScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.signupContainer}>
-                    <Text style={styles.signupText}>have an account?</Text>
+                    <Text style={styles.signupText}>Have an account?</Text>
                     <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     >
@@ -178,11 +195,11 @@ const styles = StyleSheet.create({
         color: 'rgb(255,255,255)',
     },
     titleContainer: {
-        marginTop: 300,
+        marginTop: 200,
         width: '80%',
     },
     title: {
-        color: 'white',
+        color: 'black',
         fontSize: 30,
         fontWeight: 'bold',
         textAlign: 'left',
@@ -193,7 +210,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     button: {
-        width: '42%',
+        width: '50%',
         borderWidth: 2,
         borderColor: 'rgba(255,255,255,0.7)',
         borderRadius: 10,
@@ -235,13 +252,13 @@ const styles = StyleSheet.create({
         width: '80%',
         marginTop: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     dateText: {
         color: 'rgba(255,255,255,0.7)',
         fontSize: 15,
-        width: '40%',
+        //width: '40%',
     },
 
 })
