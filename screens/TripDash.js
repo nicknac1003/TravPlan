@@ -1,20 +1,19 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native'
 import React from 'react'
-
+import { useUser } from '../hooks/UserProvider';
 const TripDash = ({ route, navigation }) => {
-    const tripData = route.params.tripData;
-    const userData = route.params.userData;
+    const {user, trip} = useUser()
     //const navigation = useNavigation();
   return (
     <SafeAreaView>
         {/* header */}
         <View style={styles.header}>
-            <TouchableOpacity style={styles.HomeButton}onPress={()=>{navigation.navigate('Home', {userData: userData})}}>
+            <TouchableOpacity style={styles.HomeButton}onPress={()=>{navigation.navigate('Home')}}>
                 <Text style={styles.HomeButtonText}>Back to Trips</Text>
             </TouchableOpacity>
         </View>  
         <View>
-            <Text style={styles.tripName}>{tripData.tripName}</Text>
+            <Text style={styles.tripName}>{trip.tripName}</Text>
         </View>
         
     </SafeAreaView>

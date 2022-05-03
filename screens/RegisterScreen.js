@@ -1,25 +1,15 @@
-import {
-    ImageBackground,
-    StyleSheet,
-    Text,
-    View,
-    KeyboardAvoidingView,
-    TextInput,
-    TouchableOpacity,
-    Keyboard,
-    TouchableWithoutFeedback,
-    Platform
-} from 'react-native'
-import React from 'react'
+import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Button } from 'react-native'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import background from '../assets/images/background.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 const RegisterScreen = () => {
-    const [name, setName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [birthday, setBirthday] = React.useState(new Date());
-    const [showDatePicker, setShowDatePicker] = React.useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [birthday, setBirthday] = useState(new Date());
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const navigation = useNavigation();
     const handleRegister = () => {
@@ -91,10 +81,22 @@ const RegisterScreen = () => {
             })
         //navigation.navigate('Home');
     }
-    const onChange = (e, date) => {
-        setShowDatePicker(Platform.OS === 'ios');
+
+    
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        //console.warn("A date has been picked: ", date);
         setBirthday(date);
-    }
+        hideDatePicker();
+    };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
@@ -105,7 +107,7 @@ const RegisterScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Glad to have you!</Text>
+                    <Text style={styles.title}>Register</Text>
                 </View>
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -131,19 +133,17 @@ const RegisterScreen = () => {
                         onChangeText={text => setPassword(text)}
                         secureTextEntry
                     />
-                    <View style={styles.input}>
-                        <TouchableOpacity
-                            onPress={() => setShowDatePicker(true)}
-                        >
-                            <Text style={styles.dateText}>Set birthday...</Text>
-                        </TouchableOpacity>
-                        {showDatePicker ? <DateTimePicker
-                            mode="date"
-                            value={birthday}
-                            is24Hour={true}
-                            onChange={onChange}
-                            style={styles.datePicker}
-                        /> : null}
+                    <View style={styles.dateContainer}>
+                        <Text style={styles.dateText}>Birthday</Text>
+                        <View>
+                            <Button title="Show Date Picker" onPress={showDatePicker} />
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                            />
+                        </View>
                     </View>
                 </View>
                 <View style={styles.buttonContainer}>
@@ -155,7 +155,7 @@ const RegisterScreen = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.signupContainer}>
-                    <Text style={styles.signupText}>Have an account?</Text>
+                    <Text style={styles.signupText}>have an account?</Text>
                     <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     >
@@ -195,11 +195,11 @@ const styles = StyleSheet.create({
         color: 'rgb(255,255,255)',
     },
     titleContainer: {
-        marginTop: 200,
+        marginTop: 300,
         width: '80%',
     },
     title: {
-        color: 'black',
+        color: 'white',
         fontSize: 30,
         fontWeight: 'bold',
         textAlign: 'left',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     button: {
-        width: '50%',
+        width: '42%',
         borderWidth: 2,
         borderColor: 'rgba(255,255,255,0.7)',
         borderRadius: 10,
@@ -252,13 +252,13 @@ const styles = StyleSheet.create({
         width: '80%',
         marginTop: 20,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     dateText: {
         color: 'rgba(255,255,255,0.7)',
         fontSize: 15,
-        //width: '40%',
+        width: '40%',
     },
 
 })
