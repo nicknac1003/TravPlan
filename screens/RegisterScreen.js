@@ -8,7 +8,7 @@ const RegisterScreen = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [birthday, setBirthday] = useState(new Date());
+    const [birthday, setBirthday] = useState(null);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const navigation = useNavigation();
@@ -135,8 +135,8 @@ const RegisterScreen = () => {
                     />
                     <View style={styles.dateContainer}>
                         <Text style={styles.dateText}>Birthday</Text>
-                        <View>
-                            <Button title="Show Date Picker" onPress={showDatePicker} />
+                        <View style={styles.datePicker}>
+                            <TouchableOpacity onPress={showDatePicker} style={styles.chooseButton}><Text style={styles.chosenDateText}>{birthday===null? 'Choose Birthday':birthday.toLocaleDateString('en-us', {year: 'numeric', month: 'long', day: 'numeric' })}</Text></TouchableOpacity>
                             <DateTimePickerModal
                                 isVisible={isDatePickerVisible}
                                 mode="date"
@@ -243,16 +243,14 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
     },
     datePicker: {
-        width: '50%',
-        borderWidth: 2,
-        borderColor: 'rgba(255,255,255,0.7)',
-        borderRadius: 10,
+        width: '60%',
+
     },
     dateContainer: {
-        width: '80%',
+        width: '100%',
         marginTop: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
     dateText: {
@@ -260,7 +258,20 @@ const styles = StyleSheet.create({
         fontSize: 15,
         width: '40%',
     },
-
+    chosenDateText: {
+        color: 'rgb(255,255,255)',
+        fontSize: 15,
+        textAlign: 'center',
+    },
+    chooseButton: {
+        width: '100%',
+        color: 'rgb(255,255,255)',
+        borderWidth: 2,
+        borderColor: 'rgba(255,255,255,0.7)',
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
+    },
 })
 
 
