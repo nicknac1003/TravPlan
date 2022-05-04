@@ -42,38 +42,8 @@ const RegisterScreen = () => {
                         break;
                     case 200:
                         res.json().then(data => {
-                            fetch('https://us-central1-travplan-347915.cloudfunctions.net/login', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    email: data.email,
-                                    password: data.password
-                                })
-                            })
-                            .then(res => {
-                                let statusCode = res.status;
-                                console.log(statusCode);
-                                switch(statusCode) {
-                                    case 404:
-                                        alert('Email or password incorrect');
-                                        break;
-                                    case 200:
-                                        res.json().then(data => {
-                                            console.log(data);
-                                            navigation.navigate('Home', {
-                                                userData: data
-                                            });
-                                        });
-                                        break;
-                                    default:
-                                        alert('Something went wrong');
-                                        break;
-                                }
-                            }
-                            )})
-                        break;
+                            navigatation.navigate('Login')
+                        });
                     default:
                         alert('Something went wrong');
                         break;
