@@ -97,7 +97,7 @@ const HomeScreen = ({route}) => {
     <SafeAreaView style={styles.container}>
         <View style={styles.headContainer}>
             <Text style={styles.headTitle}>Want to Travel?</Text>
-            <Text style={styles.headTitle}>Lets Go!</Text>
+            <Text style={styles.headTitle}>Let's Go!</Text>
         </View>
         {
             loading ?
@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
     newTripButton: {
         backgroundColor: 'rgb(0,0,0)',
         borderRadius: 5,
-        padding: 10,
-        paddingHorizontal: 120,
+        paddingHorizontal: 100,
+        paddingVertical: 20,
     },
     newTripText: {
         color: 'white',
