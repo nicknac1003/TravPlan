@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, Image, Text, SafeAreaView, View, ImageBackground } from 'react-native'
+import {StyleSheet, Image, Text, SafeAreaView, View, ImageBackground, Platform} from 'react-native'
 import abg from '../assets/SwipeImgs/abg.jpg'
 import sv from '../assets/SwipeImgs/sv.jpg'
 import h from '../assets/SwipeImgs/hawks.jpg'
@@ -80,6 +80,7 @@ function SwipeScreen({ routes, navigation}) {
         <View style={styles.swipeContainer}>
           <Swiper cards={places}
             ref={swipeRef}
+            useViewOverflow={Platform.OS === 'ios'}
             containerStyle={{ backgroundColor: 'transparent'}}
             stackSize={3}
             stackSeparation={0}
@@ -94,7 +95,7 @@ function SwipeScreen({ routes, navigation}) {
                 title: 'NOPE',
                   style: {
                     label: {
-                      
+
                       color: 'red',
                       marginLeft: 'auto',
                       right: 0,
@@ -113,7 +114,7 @@ function SwipeScreen({ routes, navigation}) {
                       color: '#4DED30',
                       borderWidth: 4,
                       borderColor: '#4DED30',
-                      width: '29%',
+                      width: '38%',
                       paddingVertical: 2,
                       paddingHorizontal: 2,
                       marginLeft: 10,
@@ -156,18 +157,17 @@ function SwipeScreen({ routes, navigation}) {
               </View>
             )}
           />
+
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            onPress={() => swipeRef.current.swipeLeft()}
-            style={[styles.button, {backgroundColor: '#fecaca'}]}>
-            <Entypo name='cross' size={32} color='red'/>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            onPress={() => swipeRef.current.swipeRight()}
-            style={[styles.button, {backgroundColor: '#bbf7d0'}]}>
-            <AntDesign name='heart' size={32} color='green'/>
-          </TouchableOpacity>
+          <View
+              style={styles.noButton}>
+            <Text>Dislike</Text>
+          </View>
+          <View
+              style={styles.yesButton}>
+            <Text>Like</Text>
+          </View>
         </View>
       </SafeAreaView>
 
@@ -240,13 +240,23 @@ const styles = StyleSheet.create({
     height: '10%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    marginBottom: 40,
   },
-  button: {
+  noButton: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
     width: 70,
     height: 70,
+    backgroundColor: '#fecaca',
+  },
+  yesButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    width: 70,
+    height: 70,
+    backgroundColor: '#bbf7d0',
   }
 })
 

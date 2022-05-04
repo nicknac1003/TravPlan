@@ -7,6 +7,7 @@ const TripDash = ({ route, navigation }) => {
   return (
     <SafeAreaView>
         {/* header */}
+        {/* TODO: fetch user trips on home page or fetch data on "back to trips" button press */}
         <View style={styles.header}>
             <TouchableOpacity style={styles.HomeButton}onPress={()=>{navigation.navigate('Home')}}>
                 <Text style={styles.HomeButtonText}>Back to Trips</Text>
