@@ -42,8 +42,9 @@ const RegisterScreen = () => {
                         break;
                     case 200:
                         res.json().then(data => {
-                            navigatation.navigate('Login')
+                            navigation.navigate('Login')
                         });
+                        break;
                     default:
                         alert('Something went wrong');
                         break;
