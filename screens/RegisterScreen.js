@@ -136,7 +136,15 @@ const RegisterScreen = () => {
                     <View style={styles.dateContainer}>
                         <Text style={styles.dateText}>Birthday</Text>
                         <View style={styles.datePicker}>
-                            <TouchableOpacity onPress={showDatePicker} style={styles.chooseButton}><Text style={styles.chosenDateText}>{birthday===null? 'Choose Birthday':birthday.toLocaleDateString('en-us', {year: 'numeric', month: 'long', day: 'numeric' })}</Text></TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={showDatePicker}
+                                style={styles.chooseButton}>
+                                <Text
+                                    style={styles.chosenDateText}>
+                                    {birthday === null ? 'Choose Birthday'
+                                        : birthday.toLocaleDateString('en-us', {year: 'numeric', month: 'long', day: 'numeric' })}
+                                </Text>
+                            </TouchableOpacity>
                             <DateTimePickerModal
                                 isVisible={isDatePickerVisible}
                                 mode="date"
@@ -146,21 +154,23 @@ const RegisterScreen = () => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                    onPress={handleRegister}
-                    style={styles.button}
-                    >
-                        <Text style={styles.buttonText}>Register</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.signupContainer}>
-                    <Text style={styles.signupText}>have an account?</Text>
-                    <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    >
-                        <Text style={styles.signupButton}>Log in</Text>
-                    </TouchableOpacity>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('Login')}
+                            style={styles.backButton}
+                        >
+                            <Text style={styles.backButtonText}>Back</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            onPress={handleRegister}
+                            style={styles.button}
+                        >
+                            <Text style={styles.buttonText}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         </TouchableWithoutFeedback>
@@ -195,52 +205,49 @@ const styles = StyleSheet.create({
         color: 'rgb(255,255,255)',
     },
     titleContainer: {
-        marginTop: 300,
+        marginTop: 125,
         width: '80%',
+        borderRadius: 10,
+        backgroundColor: 'gray',
+        opacity: 0.8,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
     },
     title: {
         color: 'white',
         fontSize: 30,
         fontWeight: 'bold',
-        textAlign: 'left',
+        textAlign: 'center',
     },
     buttonContainer: {
-        width: '80%',
-        marginTop: 20,
-        marginBottom: 20,
+        width: '60%',
+        marginTop: 40,
+        marginBottom: 40,
     },
     button: {
-        width: '42%',
+        width: '80%',
         borderWidth: 2,
         borderColor: 'rgba(255,255,255,0.7)',
         borderRadius: 10,
         paddingVertical: 15,
-        paddingHorizontal: 30,
-        marginLeft: 'auto',
-        right: 0,
+    },
+    backButton: {
+        width: '50%',
+        borderWidth: 2,
+        borderColor: 'rgba(255,255,255,0.7)',
+        borderRadius: 10,
+        paddingVertical: 15,
     },
     buttonText: {
+        fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 20,
         color: 'rgb(255,255,255)',
     },
-    signupContainer: {
-        marginTop: 20,
-        width: '80%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 15,
-        textAlign: 'left',
-    },
-    signupButton: {
+    backButtonText: {
+        textAlign: 'center',
+        fontSize: 20,
         color: 'rgb(255,255,255)',
-        fontSize: 15,
-        textAlign: 'left',
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
     },
     datePicker: {
         width: '60%',
@@ -271,6 +278,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 15,
+    },
+    buttonsContainer: {
+        flex: 1,
+        width: '70%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 })
 

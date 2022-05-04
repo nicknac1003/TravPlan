@@ -4,11 +4,14 @@ import Background from '../assets/images/Atlanta.png'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../hooks/UserProvider';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 const CreateTrip = ({ route }) => {
     const [tripName, setTripName] = useState('');
     const [tripDestination, setTripDestination] = useState('');
     const [tripStartDate, setTripStartDate] = useState(new Date());
     const [tripEndDate, setTripEndDate] = useState(new Date());
+    const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
+    const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
     const { user, setTrip } = useUser();
     const navigation = useNavigation();
     //https://media.cntraveler.com/photos/57471fe678a2718d4665d5e6/16:9/w_2560%2Cc_limit/atlanta-georgia-skyline-cr-getty.jpg
@@ -46,6 +49,31 @@ const CreateTrip = ({ route }) => {
             }
         });
     }
+
+    const showStartDatePicker = () => {
+        setStartDatePickerVisibility(true);
+    };
+    const hideStartDatePicker = () => {
+        setStartDatePickerVisibility(false);
+    };
+    const handleStartConfirm = (date) => {
+        //console.warn("A date has been picked: ", date);
+        setTripStartDate(date);
+        hideStartDatePicker();
+    };
+
+    const showEndDatePicker = () => {
+        setEndDatePickerVisibility(true);
+    };
+    const hideEndDatePicker = () => {
+        setEndDatePickerVisibility(false);
+    };
+    const handleEndConfirm = (date) => {
+        //console.warn("A date has been picked: ", date);
+        setTripEndDate(date);
+        hideEndDatePicker();
+    };
+
   return (
     <ImageBackground
         source={Background}
@@ -70,36 +98,63 @@ const CreateTrip = ({ route }) => {
                         <View style={styles.dateContainer}>
                             <View style={styles.dateEntry}>
                                 <Text style={styles.dateText}>Start Date</Text>
-                                <DateTimePicker
-                                    mode="date"
-                                    value={tripStartDate}
-                                    onChange={(e, date) => setTripStartDate(date)}
-                                    style={styles.datePicker}
-                                />
+                                <View style={styles.datePicker}>
+                                    <TouchableOpacity
+                                        onPress={showStartDatePicker}
+                                        style={styles.chooseButton}>
+                                        <Text
+                                            style={styles.chosenDateText}>
+                                            {tripStartDate === null ? 'Choose Start'
+                                                : tripStartDate.toLocaleDateString('en-us', {year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DateTimePickerModal
+                                        isVisible={isStartDatePickerVisible}
+                                        mode="date"
+                                        onConfirm={handleStartConfirm}
+                                        onCancel={hideStartDatePicker}
+                                    />
+                                </View>
                             </View>
                             <View style={styles.dateEntry}>
                                 <Text style={styles.dateText}>End Date</Text>
-                                <DateTimePicker
-                                    mode="date"
-                                    value={tripEndDate}
-                                    onChange={(e, date) => setTripEndDate(date)}
-                                    style={styles.datePicker}
-                                />
+                                <View style={styles.datePicker}>
+                                    <TouchableOpacity
+                                        onPress={showEndDatePicker}
+                                        style={styles.chooseButton}>
+                                        <Text
+                                            style={styles.chosenDateText}>
+                                            {tripEndDate === null ? 'Choose End'
+                                                : tripEndDate.toLocaleDateString('en-us', {year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <DateTimePickerModal
+                                        isVisible={isEndDatePickerVisible}
+                                        mode="date"
+                                        onConfirm={handleEndConfirm}
+                                        onCancel={hideEndDatePicker}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
                     <View style={styles.center}>
                         <Text style={styles.destinationText}>Atlanta</Text>
                     </View>
-
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={handleGo}>
-                            <Text style={styles.buttonText}>Lets Go!</Text>
-                        </TouchableOpacity>
+                    <View style={styles.buttonsContainer}>
+                        <View style={styles.cancelButtonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+                                <Text style={styles.buttonText}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button} onPress={handleGo}>
+                                <Text style={styles.buttonText}>Let's Go!</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-            
         </SafeAreaView>
     </ImageBackground>
   )
@@ -121,7 +176,7 @@ const styles = StyleSheet.create({
     },
     input: {
         paddingHorizontal: 15,
-        paddingVertical: 10,
+        paddingVertical: 5,
         borderRadius: 10,
         marginTop: 25,
         borderBottomWidth: 2,
@@ -146,7 +201,7 @@ const styles = StyleSheet.create({
         width: '60%',
     },
     center: {
-        marginTop: 20,
+        marginTop: 10,
         minWidth: '75%',
         height: '40%',
         borderWidth: 10,
@@ -162,18 +217,41 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         width: '80%',
-        marginTop: 30,
+    },
+    cancelButtonContainer: {
+        width: '60%',
     },
     button: {
-        width: '100%',
+        width: '60%',
         backgroundColor: 'rgba(0,0,0,0.6)',
-        paddingHorizontal: '30%',
         paddingVertical: 5,
         borderRadius: 5,
         borderWidth: 2,
     },
     buttonText: {
-        fontSize: 30,
+        fontSize: 20,
         color: 'white',
+        textAlign: 'center',
+    },
+    chosenDateText: {
+        color: 'black',
+        fontSize: 15,
+        textAlign: 'center',
+    },
+    chooseButton: {
+        width: '100%',
+        color: 'black',
+        borderWidth: 2,
+        borderColor: 'rgba(0,0,0,0.6)',
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 15,
+    },
+    buttonsContainer: {
+        marginTop: 25,
+        width: '80%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
 })
