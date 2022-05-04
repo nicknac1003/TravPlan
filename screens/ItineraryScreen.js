@@ -57,8 +57,28 @@ const ItineraryScreen = ({ route, navigation }) => {
           highlightDateNumberStyle={{color: 'white'}}
         />
         </View>
-        <ScrollView>
+        <View style={styles.itineraryTitles}>
+          <Text style={styles.itineraryTitle}>time</Text>
+          <Text style={styles.itineraryTitle}>event</Text>
 
+        </View>
+        <ScrollView>
+          {trip.itenerary.length > 0?
+          <View style={styles.itineraryContainer}>
+            {trip.itinerary.map((item, index) => {
+              return (
+                <View style={styles.itineraryItem} key={index}>
+                  <Text style={styles.itineraryItemTime}>{item.time}</Text>
+                  <Text style={styles.itineraryItemEvent}>{item.event}</Text>
+                </View>
+              )
+              })}
+          </View>
+          :
+          <View style={styles.noItineraryContainer}>
+            <Text style={styles.noItineraryItem}>No Events Added</Text>
+          </View>
+          }
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -125,5 +145,24 @@ const styles = StyleSheet.create({
   },
   myText: {
     color: '#A3A6AB',
-  }
+  },
+  itineraryTitles: {
+    width: '40%',
+    height: '10%',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  itineraryTitle: {
+    fontSize: 14,
+    color: '#A3A6AB',
+  },
+  noItineraryContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noItineraryItem: {
+    fontSize: 20,
+    
+  },
 })
