@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         color: 'rgb(255,255,255)',
     },
     titleContainer: {
-        marginTop: 125,
+        marginTop: 300,
         width: '80%',
         borderRadius: 10,
         backgroundColor: 'gray',
