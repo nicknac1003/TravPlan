@@ -1,9 +1,13 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
-import React from 'react'
+import { useIsFocused } from '@react-navigation/native';
+import React, { useEffect, useRef } from 'react'
 import { useUser } from '../hooks/UserProvider';
+import CalendarStrip from 'react-native-calendar-strip';
+
 const ItineraryScreen = ({ route, navigation }) => {
   const { user, trip } = useUser();
   const tripStart = new Date(trip.tripDateStart._seconds * 1000);
+
 
   const _getString = (date) => {
     let diff = tripStart.getTime() - Date.now();
@@ -17,6 +21,12 @@ const ItineraryScreen = ({ route, navigation }) => {
     } else {
       return `${-days} days ago`;
     }
+  } 
+
+  const _getFirstDay = (startDate) => {
+    let start = new Date(startDate);
+    start = tripStart.setDate(tripStart.getDate()-10)
+    return start
   }
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -37,7 +47,15 @@ const ItineraryScreen = ({ route, navigation }) => {
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.carousel}>
-
+        <CalendarStrip
+          style={{height:150, paddingTop: 20, paddingBottom: 10}}
+          selectedDate={tripStart}
+          calendarHeaderStyle={{marginBottom: 5,}}
+          innerStyle={{marginTop: 5,}}
+          highlightDateContainerStyle={{backgroundColor: '#FF9D9D'}}
+          highlightDateNameStyle={{color: 'white'}}
+          highlightDateNumberStyle={{color: 'white'}}
+        />
         </View>
         <ScrollView>
 

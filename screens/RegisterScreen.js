@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Button } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import background from '../assets/images/background.png'
@@ -105,7 +105,7 @@ const RegisterScreen = () => {
         style={styles.background}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Register</Text>
                 </View>
@@ -162,7 +162,7 @@ const RegisterScreen = () => {
                         <Text style={styles.signupButton}>Log in</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         </TouchableWithoutFeedback>
       </ImageBackground>
     </KeyboardAvoidingView>
